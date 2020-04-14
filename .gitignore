@@ -1,0 +1,7 @@
+node_modules
+.vscode
+package-lock.json
+bundle.js
+straightedge.min.js
+straightedge-fe
+straightedge-fe-core
