@@ -3,5 +3,6 @@ node_modules
 package-lock.json
 bundle.js
 straightedge.min.js
-straightedge-fe
-straightedge-fe-core
+dist
+.nyc_output
+coverage

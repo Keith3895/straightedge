@@ -6,9 +6,10 @@ Straightedge is(will be) a application that will generate code that can be run b
 1) [Architecture](#Architecture)
 2) [Introduction](#Introductions)
 3) [Usage Guide](#Usage)
-4) [License](#license)
+4) [RoadMap](#RoadMap)
+5) [License](#license)
 ### Architecture 
-![architecture](./docs/architecture.jpg)
+![architecture](./docs/architecture.png)
 
 the architecture of this application is segmented to two main blocks:
 1) the frontend(browser extension).
@@ -35,6 +36,14 @@ Installation guide for:
 
 ### Usage
 Usage instructions of straightedge.
+
+### RoadMap
+- CI/CD build automation.
+- TDD-esque development.
+- switching to webpack.
+- CDN deployments.
+
+
 ### License
 GNU General Public License v3.0 or later
 
