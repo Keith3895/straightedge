@@ -78,4 +78,53 @@ export class Utils {
     public writeFileSync(from, to) {
         fs.writeFileSync(to, fs.readFileSync(from, 'binary'), 'binary');
     }
+    /**
+     * Method to replace the templatized values on the file.
+     * @param {string} fileStringReplaceOptions.filePath - the path of the file to replace.
+     * @param {boolean} fileStringReplaceOptions.ensure - to ensure check the file and add it.
+     * @param {Function} fileStringReplaceOptions.replaceCallback - callback functions.
+     */
+    public fileStringReplaceSync(fileStringReplaceOptions: any) {
+        if (!fileStringReplaceOptions.filePath || !fileStringReplaceOptions.replaceCallback || (typeof fileStringReplaceOptions.replaceCallback != 'function')) {
+            throw new Error('Invalid fileStringReplaceOptions: Should have a valid filePath string and replaceCallback should be of type function which will have file utf-8 as first argument')
+        }
+        if (fileStringReplaceOptions.ensure) {
+            this.ensureFileSync({
+                filePath: fileStringReplaceOptions.filePath
+            });
+        }
+        let data = fs.readFileSync(fileStringReplaceOptions.filePath, 'utf-8')
+        data = fileStringReplaceOptions.replaceCallback(data);
+        fs.writeFileSync(fileStringReplaceOptions.filePath, data);
+        return data;
+    }
+
+
+    ensureFileSync({
+        filePath = '',
+        isJson = false,
+        initialValue = ''
+    } = {}) {
+        let filePathObject = path.parse(filePath);
+        this.mkdir(filePathObject.dir);
+        try {
+            fs.statSync(filePath);
+        } catch (acessError) {
+            let content = initialValue;
+            if (initialValue && isJson) {
+                try {
+                    if (typeof initialValue !== 'string') {
+                        content = JSON.stringify(initialValue);
+                    } else {
+                        JSON.parse(initialValue);
+                    }
+                } catch (e) {
+                    throw new Error(e);
+                }
+            } else if (isJson) {
+                content = '{}';
+            }
+            fs.writeFileSync(filePath, content);
+        }
+    }
 }
