@@ -1,0 +1,110 @@
+@import "../App.scss";
+.header{
+    flex: 1 1 100%;
+    background-color: $primary;
+}
+.side-navButton,
+.side-navButton:focus{
+    flex: 1 1 100%;
+    background-color: $secondary;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    border: none;
+    outline: none;
+    
+}
+
+.side-navButton {
+    background-position: center;
+    transition: background 0.8s;
+  }
+.side-navButton:hover {
+    background: $secondary radial-gradient(circle, transparent 1%, $secondary 10%) center/15000%;
+}
+.side-navButton:active {
+    background-color: $quaternary;
+    background-size: 100%;
+    transition: background 0s;
+}
+  
+.side-navButton svg{
+    align-self: center;
+}
+
+.side-navContent{
+    background-color: $secondary;
+    height: 100%;
+    color: white;
+}
+.side-nav-button{
+    background: black;
+    padding: 10px 5px;
+    font-weight: 700;
+    justify-content: space-evenly;
+    display: flex;
+    transition: background 0.8s;
+}
+
+h1{
+    margin: 0px;
+    padding: .1em;
+}
+h3{
+    padding: .6em;
+    margin: unset;
+}
+
+.side-nav{
+    border: 1px solid;
+    flex-direction: column;
+}
+
+.content{
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.transition-delay {
+    transition: 150ms ease-out;
+}
+
+
+
+
+
+.primary-button{
+    box-sizing: border-box;
+    appearance: none;
+    background-color: transparent;
+    border: 2px solid $secondary;
+    border-radius: 0.6em;
+    color: $secondary;
+    cursor: pointer;
+    display: flex;
+    align-self: center;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1;
+    margin: 20px;
+    padding: 1em 2.8em;
+    text-decoration: none;
+    text-align: center;
+    text-transform: uppercase;
+    font-weight: 700;
+    transition: background 0.8s;
+    &:hover{
+    //   color: #fff;
+    box-shadow: 0 0 10px 0 $ternary inset, 0 0 10px 4px $ternary;
+      outline: 0;
+    }
+    &:focus {
+        outline: none;
+    }
+    &:active {
+        background-color: $quaternary;
+        background-size: 100%;
+        transition: background 0s;
+    }
+}
