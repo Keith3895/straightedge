@@ -1,7 +1,7 @@
 import React from 'react';
 import './landingPage.scss';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faChevronLeft, faFile, faBars } from '@fortawesome/free-solid-svg-icons'
+import { faChevronLeft, faFile, faBars, faFolder, faPlus } from '@fortawesome/free-solid-svg-icons'
 
 export class LandingPage extends React.Component {
     constructor(props) {
@@ -16,13 +16,25 @@ export class LandingPage extends React.Component {
         };
         this.handleChange = this.handleChange.bind(this);
     }
+    createNewProject(){
+        alert('WIP');
+    }
     workspaceSelctor() {
         return (
             <div>
-                <button className='primary-button' 
-                // onClick={this.handleChange}
-                > test</button>
+                <div className='row'>
+                <button className='primary-button' onClick={this.handleChange}>
+                    <FontAwesomeIcon icon={faFolder} />
+                    {this.state.path ? 'Change' : 'Chose'} Workspace
+                </button>
                 <h4>{this.state.path}</h4>
+                </div>
+                <button className='primary-button'
+                onClick={this.createNewProject}
+                >
+                    <FontAwesomeIcon icon={faPlus} />
+                 Create project</button>
+
             </div>
         );
     }
@@ -38,13 +50,45 @@ export class LandingPage extends React.Component {
 
     }
     listOfProjects = () => {
-        return (
-            <ul>
-                <li>
+        if (this.state.path) {
+            if (this.state.projects) {
+                return (
+                    <div className='row' style={{ width: '100%', 'flexWrap': 'wrap' }}>
+                        <div className="card" style={{ width: '20vw' }}>
+                            <h4>card</h4>
+                        </div>
+                        <div className="card" style={{ width: '20vw' }}>
+                            <h4>card</h4>
+                        </div>
+                        <div className="card" style={{ width: '20vw' }}>
+                            <h4>card</h4>
+                        </div>
+                        <div className="card" style={{ width: '20vw' }}>
+                            <h4>card</h4>
+                        </div>
+                        <div className="card" style={{ width: '20vw' }}>
+                            <h4>card</h4>
+                        </div>
+                        <div className="card" style={{ width: '20vw' }}>
+                            <h4>card</h4>
+                        </div>
+                        <div className="card" style={{ width: '20vw' }}>
+                            <h4>card</h4>
+                        </div>
+                    </div>
+                );
+            } else {
+                return (
+                    <h4> no projects found.</h4>
+                );
+            }
 
-                </li>
-            </ul>
-        );
+        } else {
+            return (
+                <h3>Please select a workspace to start working.</h3>
+            );
+        }
+
     }
     header = () => {
         return (
@@ -74,7 +118,7 @@ export class LandingPage extends React.Component {
             <div className='content'>
                 {this.header()}
                 {this.workspaceSelctor()}
-                <h1>landing page is here. {this.props.test}</h1>
+                {this.listOfProjects()}
             </div>
         );
     }
