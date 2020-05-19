@@ -2,7 +2,7 @@ import React from 'react';
 import './landingPage.scss';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faChevronLeft, faFile, faBars, faFolder, faPlus } from '@fortawesome/free-solid-svg-icons'
-
+import axios from 'axios';
 export class LandingPage extends React.Component {
     constructor(props) {
         super(props);
@@ -16,21 +16,27 @@ export class LandingPage extends React.Component {
         };
         this.handleChange = this.handleChange.bind(this);
     }
-    createNewProject(){
+    componentDidMount() {
+        axios.get(`http://localhost:3001/preference`)
+            .then(res => {
+                console.log(res);
+            })
+    }
+    createNewProject() {
         alert('WIP');
     }
     workspaceSelctor() {
         return (
             <div>
                 <div className='row'>
-                <button className='primary-button' onClick={this.handleChange}>
-                    <FontAwesomeIcon icon={faFolder} />
-                    {this.state.path ? 'Change' : 'Chose'} Workspace
+                    <button className='primary-button' onClick={this.handleChange}>
+                        <FontAwesomeIcon icon={faFolder} />
+                        {this.state.path ? 'Change' : 'Chose'} Workspace
                 </button>
-                <h4>{this.state.path}</h4>
+                    <h4>{this.state.path}</h4>
                 </div>
                 <button className='primary-button'
-                onClick={this.createNewProject}
+                    onClick={this.createNewProject}
                 >
                     <FontAwesomeIcon icon={faPlus} />
                  Create project</button>

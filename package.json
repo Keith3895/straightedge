@@ -2,15 +2,16 @@
   "name": "straightedge",
   "version": "0.0.1",
   "description": "Backend code generator part of straightedge.",
-  "main": "index.js",
+  "main": "main.js",
   "directories": {
     "doc": "docs"
   },
   "scripts": {
     "start": "tsc && node dist/app.js",
+    "build-backend": "tsc",
     "test": "mocha -r ts-node/register **/**/*spec.ts",
     "coverage": "nyc npm run test",
-    "electron": "electron src/straightedge-ui"
+    "electron": "tsc && electron ."
   },
   "repository": {
     "type": "git",
@@ -32,6 +33,7 @@
     "@types/node": "^13.11.1",
     "chai": "^4.2.0",
     "cross-env": "^7.0.2",
+    "electron-log": "^4.1.2",
     "express": "^4.17.1",
     "mocha": "^7.1.1",
     "nyc": "^15.0.1",
