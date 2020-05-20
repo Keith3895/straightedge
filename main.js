@@ -36,13 +36,11 @@ function startExpress() {
 
   // Handle standard out data from the child process
   webServer.stdout.on('data', function (data) {
-    console.log(data);
     log.info('data: ' + data);
   });
 
   // Triggered when a child process uses process.send() to send messages.
   webServer.on('message', function (message) {
-    console.log(message);
     log.info(message);
   });
 
@@ -77,22 +75,22 @@ function startExpress() {
 function createWindow() {
   // Create the browser window.
   const mainWindow = new BrowserWindow({
-    width: 800,
-    height: 600,
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
       nodeIntegration: true,
       contextIsolation: true
     }
   })
-
+  mainWindow.maximize();
   // and load the index.html of the app.
   mainWindow.loadURL('http://localhost:3000');
-
+  let callCounter = 0;
   ipcMain.on('select-dirs', async (event, arg) => {
+    console.log(++callCounter);
     const result = await dialog.showOpenDialog(mainWindow, {
       properties: ['openDirectory']
-    })
+    });
+    callCounter=0;
     console.log('directories selected', result.filePaths)
     mainWindow.webContents.send("fromMain", result.filePaths);
   })
@@ -123,7 +121,7 @@ app.on('window-all-closed', function () {
   // On macOS it is common for applications and their menu bar
   // to stay active until the user quits explicitly with Cmd + Q
   if (process.platform !== 'darwin') app.quit()
-
+  ipcMain.removeAllListeners();
 })
 app.on('before-quit', () => {
   shuttingDown = true;

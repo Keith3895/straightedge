@@ -3,11 +3,13 @@ import './landingPage.scss';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faChevronLeft, faFile, faBars, faFolder, faPlus } from '@fortawesome/free-solid-svg-icons'
 import axios from 'axios';
+import { NewProjectModal } from '../newProjectModal/newProject';
 export class LandingPage extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             path: "",
+            showNewProject: true,
             expandStaus: {
                 status: true,
                 display: 'flex',
@@ -17,13 +19,22 @@ export class LandingPage extends React.Component {
         this.handleChange = this.handleChange.bind(this);
     }
     componentDidMount() {
+        this.getWorkspace();
+    }
+    getWorkspace = () => {
         axios.get(`http://localhost:3001/preference`)
             .then(res => {
-                console.log(res);
-            })
+                if (res.data.workspace) {
+                    this.setState({
+                        path: res.data.workspace
+                    });
+                }
+            });
     }
-    createNewProject() {
-        alert('WIP');
+    createNewProject = () => {
+        this.setState(showNewProject => {
+            return { showNewProject: !this.state.showNewProject }
+        });
     }
     workspaceSelctor() {
         return (
@@ -40,7 +51,7 @@ export class LandingPage extends React.Component {
                 >
                     <FontAwesomeIcon icon={faPlus} />
                  Create project</button>
-
+                <NewProjectModal onClose={this.createNewProject} show={this.state.showNewProject} />
             </div>
         );
     }
@@ -49,11 +60,15 @@ export class LandingPage extends React.Component {
             type: 'select-dirs'
         })
         console.log(event)
-        window.api.receive("fromMain", (data) => {
-            this.setState({ path: data });
-            console.log(`Received ${data} from main process`);
-        });
+        window.api.receive("fromMain", (data) => this.setWorkspace(data));
 
+    }
+    setWorkspace = (data) => {
+        axios.post('http://localhost:3001/workspace', {
+            path: data
+        }).then(res => {
+            this.getWorkspace();
+        });
     }
     listOfProjects = () => {
         if (this.state.path) {
