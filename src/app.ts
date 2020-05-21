@@ -1,9 +1,3 @@
-// import { Seeder } from './codeGen/seed';
-
-// let seeder = new Seeder('test', './output');
-// seeder.run('./__template/seedApp');
-
-
 import express from 'express';
 import { CoreAPI } from './services/routes/coreAPI';
 import cors from 'cors';

@@ -8,10 +8,10 @@
   },
   "scripts": {
     "start": "tsc && node dist/app.js",
-    "build-backend": "tsc",
+    "build-backend": "tsc && cp -r src/config/* dist/config",
     "test": "mocha -r ts-node/register **/**/*spec.ts",
     "coverage": "nyc npm run test",
-    "electron": "tsc && electron ."
+    "electron": "npm run build-backend && electron ."
   },
   "repository": {
     "type": "git",

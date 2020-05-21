@@ -1,8 +1,11 @@
 import React from 'react';
 import './newProject.scss';
+import { MaterialInput } from '../materialInput/materialInput';
+import axios from 'axios';
 export class NewProjectModal extends React.Component {
     state = {
-        value:''
+        value: '',
+        showLoader:'none'
     };
     constructor(props) {
         super(props);
@@ -18,15 +21,36 @@ export class NewProjectModal extends React.Component {
     createProjectForm() {
         return (
             <div>
-                <div className={`app-div ${this.state.value?'is-completed':''}`}>
-                    <label htmlFor="id" className="app-label" >Project Name</label>
-                    <input className="app-input" value={this.state.value} onChange={this.handleChange}  />
-                </div>
+                <MaterialInput value={this.setprojectName} placeHolder='Project Name' />
+                <MaterialInput value={this.setprojectDescription} placeHolder='Project Description' />
             </div>
         );
     }
-    handleChange = (e) => {
-        this.setState({ value: e.target.value });
+    setprojectName = (name) => {
+        this.setState({
+            projectName: name
+        });
+    }
+    setprojectDescription = (description) => {
+        this.setState({
+            projectDescription: description
+        });
+    }
+    submit = (e) => {
+        this.setState({
+            showLoader:'block'
+        });
+        let projectInfo = {
+            projectName: this.state.projectName,
+            projectDescription: this.state.projectDescription
+        }
+        e['projectInfo'] = projectInfo;
+        axios.post('http://localhost:3001/createProject', projectInfo).then(res => {
+            this.setState({
+                showLoader:'none'
+            });
+            this.onClose(e);
+        });
     }
     render() {
         if (!this.props.show) {
@@ -39,13 +63,27 @@ export class NewProjectModal extends React.Component {
                     <div className="content">
                         {this.createProjectForm()}
                     </div>
-                    <div className="actions">
-                        <button className="toggle-button" onClick={this.onClose}>
-                            close
+                    <div className="actions row">
+                        <button className="button pent-button" onClick={this.onClose}>
+                            Cancel
                         </button>
+                        <button className="button primary-button" onClick={this.submit}>
+                            Submit
+                        </button>
+                        <div style={{ 'display': this.state.showLoader }}>
+                            <div className="loader">
+                                <div className="loader--dot"></div>
+                                <div className="loader--dot"></div>
+                                <div className="loader--dot"></div>
+                                <div className="loader--dot"></div>
+                                <div className="loader--dot"></div>
+                                <div className="loader--dot"></div>
+                                <div className="loader--text"></div>
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </div>
+            </div >
         );
     }
 }

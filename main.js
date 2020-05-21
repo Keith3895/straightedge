@@ -50,10 +50,10 @@ function startExpress() {
     webServer = null;
 
     // Only restart if killed for a reason...
-    if (!shuttingDown) {
-      log.info('restarting...');
-      startExpress();
-    }
+    // if (!shuttingDown) {
+    //   log.info('restarting...');
+    //   startExpress();
+    // }
   });
 
   // Handle the stream for the child process stderr

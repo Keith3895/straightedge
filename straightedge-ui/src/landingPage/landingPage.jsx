@@ -31,7 +31,7 @@ export class LandingPage extends React.Component {
                 }
             });
     }
-    createNewProject = () => {
+    createNewProject = (e) => {
         this.setState(showNewProject => {
             return { showNewProject: !this.state.showNewProject }
         });
@@ -40,13 +40,13 @@ export class LandingPage extends React.Component {
         return (
             <div>
                 <div className='row'>
-                    <button className='primary-button' onClick={this.handleChange}>
+                    <button className='button' onClick={this.handleChange}>
                         <FontAwesomeIcon icon={faFolder} />
                         {this.state.path ? 'Change' : 'Chose'} Workspace
                 </button>
                     <h4>{this.state.path}</h4>
                 </div>
-                <button className='primary-button'
+                <button className='button'
                     onClick={this.createNewProject}
                 >
                     <FontAwesomeIcon icon={faPlus} />
