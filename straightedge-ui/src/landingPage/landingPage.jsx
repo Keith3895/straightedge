@@ -9,7 +9,7 @@ export class LandingPage extends React.Component {
         super(props);
         this.state = {
             path: "",
-            showNewProject: true,
+            showNewProject: false,
             expandStaus: {
                 status: true,
                 display: 'flex',
@@ -22,11 +22,12 @@ export class LandingPage extends React.Component {
         this.getWorkspace();
     }
     getWorkspace = () => {
-        axios.get(`http://localhost:3001/preference`)
+        axios.get(`http://localhost:3001/workspace`)
             .then(res => {
                 if (res.data.workspace) {
                     this.setState({
-                        path: res.data.workspace
+                        path: res.data.workspace,
+                        projects: res.data.list
                     });
                 }
             });
@@ -72,30 +73,25 @@ export class LandingPage extends React.Component {
     }
     listOfProjects = () => {
         if (this.state.path) {
+            console.log(this.state.projects);
             if (this.state.projects) {
+
                 return (
                     <div className='row' style={{ width: '100%', 'flexWrap': 'wrap' }}>
-                        <div className="card" style={{ width: '20vw' }}>
-                            <h4>card</h4>
-                        </div>
-                        <div className="card" style={{ width: '20vw' }}>
-                            <h4>card</h4>
-                        </div>
-                        <div className="card" style={{ width: '20vw' }}>
-                            <h4>card</h4>
-                        </div>
-                        <div className="card" style={{ width: '20vw' }}>
-                            <h4>card</h4>
-                        </div>
-                        <div className="card" style={{ width: '20vw' }}>
-                            <h4>card</h4>
-                        </div>
-                        <div className="card" style={{ width: '20vw' }}>
-                            <h4>card</h4>
-                        </div>
-                        <div className="card" style={{ width: '20vw' }}>
-                            <h4>card</h4>
-                        </div>
+                        {this.state.projects.map((el, i) => {
+                            return (
+                                <div key={i} className="card" style={{ width: '20vw' }}>
+                                    <div className="column">
+                                        <h4>Project Name</h4>
+                                        <h5>Project Description</h5>
+                                        <div className="row">
+                                            <button className='button primary-buttion'>open</button>
+                                            <button className='button primary-buttion'>open</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            )
+                        })}
                     </div>
                 );
             } else {

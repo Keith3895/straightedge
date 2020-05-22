@@ -4,7 +4,8 @@ import path from "path";
 export class Seeder extends Utils {
     constructor(
         private projectName,
-        private workspacePath
+        private workspacePath,
+        private projectDescription
     ) {
         super();
     }
@@ -24,6 +25,11 @@ export class Seeder extends Utils {
     private seedFiles(templatePath, outputPath) {
         try {
             this.copydirSync(templatePath, outputPath, true);
+            let projectIdentifierPath = `${outputPath}/${this.projectName}.ste.json`;
+            this.writeJSON2File(projectIdentifierPath, {
+                'projectName': this.projectName,
+                'projectDescription': this.projectDescription
+            });
         } catch (e) {
             throw new Error(e);
         }
@@ -31,10 +37,11 @@ export class Seeder extends Utils {
     public run(templatePath?) {
         if (this._checkProjectName(this.projectName)) {
             if (this.isFolderThere(this.workspacePath)) {
-                // do something.
-                this.seedFiles(templatePath, this.workspacePath);
+                let projectFolder = `${this.workspacePath}/${this.projectName}`;
+                this.mkdir(projectFolder);
+                this.seedFiles(templatePath, projectFolder);
                 this.fileStringReplaceSync({
-                    filePath: path.join(this.workspacePath, 'package.json'),
+                    filePath: path.join(projectFolder, 'package.json'),
                     replaceCallback: data => {
                         data = data.replace("%%projectName%%", this.projectName.replace(/ /g, '-'));
                         data = data.replace("%%projectDescription%%", 'still playground'); // @Keith3895 change this later.

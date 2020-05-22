@@ -1,9 +1,12 @@
 import fs from 'fs';
 import { Preferences } from './preference';
-export class Workspace {
+import { Utils } from '../codeGen/utils';
+import * as Path from 'path';
+export class Workspace extends Utils {
     wsPath: string;
     preferenceInstance = new Preferences();
     constructor(path?) {
+        super();
         if (path) {
             this.wsPath = path;
         } else {
@@ -20,11 +23,19 @@ export class Workspace {
     }
     loadWs() {
         let dirRawList = fs.readdirSync(this.wsPath);
-        return dirRawList.filter(el => this.isProjectFolder);
+        return dirRawList.map(el => this.isProjectFolder(Path.join(this.wsPath, el))).filter(el => el);
     }
     isProjectFolder = (folderPath) => {
-        let content = fs.readdirSync(folderPath);
-        let result = content.findIndex(el => /ste.json$/.test(el));
-        return result >= 0;
+        if (fs.lstatSync(folderPath).isDirectory()) {
+            let content = fs.readdirSync(folderPath);
+            let result = content.findIndex(el => /ste.json$/.test(el));
+            if (result >= 0) {
+                return this.readFileAsJSON(Path.join(folderPath, content[result]));
+            } else {
+                return false;
+            }
+        } else {
+            return false;
+        }
     }
 }

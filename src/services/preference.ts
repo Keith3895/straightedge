@@ -1,13 +1,12 @@
 import fs from 'fs';
 import preferenceConfig from '../config/preference.json';
 import path from 'path';
-export class Preferences {
+import { Utils } from '../codeGen/utils';
+export class Preferences extends Utils {
     updateWorkspace(WsPath) {
         let config = preferenceConfig;
         config['workspace'] = WsPath;
-        fs.writeFile(path.join(__dirname, '../config/preference.json'), JSON.stringify(config), 'utf8', (err) => {
-            if (err) throw err;
-        });
+        this.writeJSON2File(path.join(__dirname, '../config/preference.json'), config);
     }
     get preference() {
         return preferenceConfig;

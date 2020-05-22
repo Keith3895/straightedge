@@ -28,7 +28,7 @@ CoreAPI.post('/workspace', (req, res) => {
 
 CoreAPI.post('/createProject', (req, res) => {
     let projectName = req.body.projectName.replace(/(\s)|(\.)/ig, '_');
-    let seeder = new Seeder(projectName, WSinstance.WsPath);
+    let seeder = new Seeder(projectName, WSinstance.WsPath,req.body.projectDescription);
     seeder.run(path.join(__dirname, '../../config/__template/seedApp'));
     res.status(200).send({
         'message': 'success',
