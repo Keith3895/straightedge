@@ -3,9 +3,9 @@ import path from "path";
 
 export class Seeder extends Utils {
     constructor(
-        private projectName,
-        private workspacePath,
-        private projectDescription
+        private projectName: string,
+        private workspacePath: string,
+        private projectDescription: string
     ) {
         super();
     }

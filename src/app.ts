@@ -19,3 +19,5 @@ app.use(bodyParser.json())
 app.use('/', CoreAPI);
 
 app.listen(3001);
+
+export default app;
