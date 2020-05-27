@@ -2,12 +2,16 @@ import React from 'react';
 import './landingPage.scss';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faChevronLeft, faFile, faBars, faFolder, faPlus } from '@fortawesome/free-solid-svg-icons'
-
+import axios from 'axios';
+import { MaterialInput } from '../component/materialInput/materialInput';
+import { Modal } from '../component/modal/modal';
 export class LandingPage extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            value: '',
             path: "",
+            showNewProject: false,
             expandStaus: {
                 status: true,
                 display: 'flex',
@@ -16,65 +20,97 @@ export class LandingPage extends React.Component {
         };
         this.handleChange = this.handleChange.bind(this);
     }
-    createNewProject(){
-        alert('WIP');
+    componentDidMount() {
+        this.getWorkspace();
+    }
+    getWorkspace = () => {
+        axios.get(`http://localhost:3001/workspace`)
+            .then(res => {
+                if (res.data.workspace) {
+                    this.setState({
+                        path: res.data.workspace,
+                        projects: res.data.list
+                    });
+                }
+            });
+    }
+    createNewProject = (e) => {
+        this.setState(showNewProject => {
+            return { showNewProject: !this.state.showNewProject }
+        });
+    }
+    createNewProjectSubmit = (e) => {
+        let projectInfo = {
+            projectName: this.state.projectName,
+            projectDescription: this.state.projectDescription
+        }
+        axios.post('http://localhost:3001/createProject', projectInfo).then(res => {
+            this.createNewProject();
+        });
     }
     workspaceSelctor() {
         return (
             <div>
                 <div className='row'>
-                <button className='primary-button' onClick={this.handleChange}>
-                    <FontAwesomeIcon icon={faFolder} />
-                    {this.state.path ? 'Change' : 'Chose'} Workspace
+                    <button className='button' onClick={this.handleChange}>
+                        <FontAwesomeIcon icon={faFolder} />
+                        {this.state.path ? 'Change' : 'Chose'} Workspace
                 </button>
-                <h4>{this.state.path}</h4>
+                    <h4>{this.state.path}</h4>
                 </div>
-                <button className='primary-button'
-                onClick={this.createNewProject}
-                >
+                <button className='button'
+                    onClick={this.createNewProject}>
                     <FontAwesomeIcon icon={faPlus} />
                  Create project</button>
-
             </div>
         );
+    }
+    setprojectName = (name) => {
+        this.setState({
+            projectName: name
+        });
+    }
+    setprojectDescription = (description) => {
+        this.setState({
+            projectDescription: description
+        });
     }
     handleChange(event) {
         window.postMessage({
             type: 'select-dirs'
         })
         console.log(event)
-        window.api.receive("fromMain", (data) => {
-            this.setState({ path: data });
-            console.log(`Received ${data} from main process`);
-        });
+        window.api.receive("fromMain", (data) => this.setWorkspace(data));
 
+    }
+    setWorkspace = (data) => {
+        axios.post('http://localhost:3001/workspace', {
+            path: data
+        }).then(res => {
+            this.getWorkspace();
+        });
     }
     listOfProjects = () => {
         if (this.state.path) {
+            console.log(this.state.projects);
             if (this.state.projects) {
+
                 return (
                     <div className='row' style={{ width: '100%', 'flexWrap': 'wrap' }}>
-                        <div className="card" style={{ width: '20vw' }}>
-                            <h4>card</h4>
-                        </div>
-                        <div className="card" style={{ width: '20vw' }}>
-                            <h4>card</h4>
-                        </div>
-                        <div className="card" style={{ width: '20vw' }}>
-                            <h4>card</h4>
-                        </div>
-                        <div className="card" style={{ width: '20vw' }}>
-                            <h4>card</h4>
-                        </div>
-                        <div className="card" style={{ width: '20vw' }}>
-                            <h4>card</h4>
-                        </div>
-                        <div className="card" style={{ width: '20vw' }}>
-                            <h4>card</h4>
-                        </div>
-                        <div className="card" style={{ width: '20vw' }}>
-                            <h4>card</h4>
-                        </div>
+                        {this.state.projects.map((el, i) => {
+                            return (
+                                <div key={i} className="card" style={{ width: '20vw' }}>
+                                    <div className="column">
+                                        <h4>{el.projectName}</h4>
+                                        <h5>{el.projectDescription}</h5>
+                                        <div className="row">
+                                            <button className='button primary-buttion'>open</button>
+                                            <button className='button primary-buttion'>open</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            )
+                        })}
                     </div>
                 );
             } else {
@@ -123,7 +159,6 @@ export class LandingPage extends React.Component {
         );
     }
     changeSidenav = (event) => {
-        console.log((this.state.expandStaus.status));
         let PrevStatus = this.state.expandStaus.status;
         this.setState({
             expandStaus: {
@@ -168,6 +203,17 @@ export class LandingPage extends React.Component {
                     {this.sidnav()}
                     {this.mainContent()}
                 </div>
+                <Modal title="Create New Project" showCancel={true} showSubmit={true} onClose={() => {
+                    this.setState({
+                        ...this.state,
+                        showNewProject: !this.state.showNewProject
+                    })
+                }} show={this.state.showNewProject} onSubmit={this.createNewProjectSubmit}>
+                    <div>
+                        <MaterialInput value={this.setprojectName} placeHolder='Project Name' />
+                        <MaterialInput value={this.setprojectDescription} placeHolder='Project Description' />
+                    </div>
+                </Modal>
             </div>
         );
     }

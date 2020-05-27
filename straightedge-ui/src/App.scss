@@ -1,0 +1,82 @@
+$primary: #56A3A6;
+$secondary: #484538;
+$ternary: #a49966;
+$quaternary: #848fa5;
+$pent: #c14953;
+.flex-container{
+    display: flex;
+    height: 100vh;
+}
+
+.row{
+    display: flex;
+    flex-direction: row;
+}
+.column{
+    display: flex;
+    flex-direction: column;
+}
+
+.row-100{
+    width: 100%;
+}
+.row-80{
+    width: 80%;
+}
+.row-75{
+    width: 75%;
+}
+
+
+.button{
+    box-sizing: border-box;
+    appearance: none;
+    background-color: transparent;
+    border: 2px solid $secondary;
+    border-radius: 0.6em;
+    color: $secondary;
+    cursor: pointer;
+    display: flex;
+    align-self: center;
+    justify-content: space-evenly;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1;
+    margin: 10px;
+    padding: .5em 1em;
+    text-decoration: none;
+    text-align: center;
+    text-transform: uppercase;
+    font-weight: 700;
+    transition: background 0.8s;
+    &:hover{
+    //   color: #fff;
+    
+    box-shadow: 0 0 3px 0 $ternary inset, 0 0 9px 0px $ternary;
+      outline: 0;
+    }
+    &:focus {
+        outline: none;
+    }
+    &:active {
+        background-color: $quaternary;
+        background-size: 100%;
+        transition: background 0s;
+    }
+}
+.primary-button{
+    background-color: $primary;
+}
+.pent-button{
+    background-color: $pent;
+    color: white;
+}
+
+.card{
+    display: flex;
+    border: 1px solid #eee;
+    box-shadow: 0 2px 2px #ccc;
+    // width: 200px;
+    padding : 20px;
+    margin: 20px;
+}

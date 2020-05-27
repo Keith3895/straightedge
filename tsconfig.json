@@ -1,6 +1,7 @@
 {
     "compilerOptions": {
         "module": "commonjs",
+        "resolveJsonModule": true,
         "esModuleInterop": true,
         "target": "es2015",
         // "moduleResolution": "node",
@@ -11,10 +12,11 @@
         "es2015"
     ],
     "include":[
-        "src/*"
+        "src/*",
     ],
     "exclude": [
         "node_modules",
-        "__template/*.spec.ts"
+        "**/__template/*.spec.ts",
+        "**/*.spec.ts"
     ]
 }

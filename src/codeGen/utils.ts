@@ -99,7 +99,19 @@ export class Utils {
         return data;
     }
 
-
+    writeJSON2File(filePath, json,callback?) {
+        fs.writeFileSync(filePath, JSON.stringify(json), 'utf8');
+    }
+    readFileAsJSON(filePath) {
+        let dataString = fs.readFileSync(filePath, 'utf-8');
+        let dataJSON = {};
+        try {
+            dataJSON = JSON.parse(dataString);
+        } catch (e) {
+            throw new Error('JSON parse failed');
+        }
+        return dataJSON;
+    }
     ensureFileSync({
         filePath = '',
         isJson = false,
