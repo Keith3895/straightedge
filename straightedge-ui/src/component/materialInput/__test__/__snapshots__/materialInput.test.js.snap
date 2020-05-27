@@ -1,0 +1,7 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders with placeholder: snapshot 1`] = `
+"<div>
+  <div class=\\"app-div \\"><label for=\\"id\\" class=\\"app-label\\">input placeholder</label><input data-testid=\\"1590585791205\\" class=\\"app-input\\" value=\\"\\"></div>
+</div>"
+`;

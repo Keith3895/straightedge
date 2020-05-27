@@ -3,11 +3,13 @@ import './landingPage.scss';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faChevronLeft, faFile, faBars, faFolder, faPlus } from '@fortawesome/free-solid-svg-icons'
 import axios from 'axios';
-import { NewProjectModal } from '../newProjectModal/newProject';
+import { MaterialInput } from '../component/materialInput/materialInput';
+import { Modal } from '../component/modal/modal';
 export class LandingPage extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            value: '',
             path: "",
             showNewProject: false,
             expandStaus: {
@@ -37,6 +39,15 @@ export class LandingPage extends React.Component {
             return { showNewProject: !this.state.showNewProject }
         });
     }
+    createNewProjectSubmit = (e) => {
+        let projectInfo = {
+            projectName: this.state.projectName,
+            projectDescription: this.state.projectDescription
+        }
+        axios.post('http://localhost:3001/createProject', projectInfo).then(res => {
+            this.createNewProject();
+        });
+    }
     workspaceSelctor() {
         return (
             <div>
@@ -48,13 +59,21 @@ export class LandingPage extends React.Component {
                     <h4>{this.state.path}</h4>
                 </div>
                 <button className='button'
-                    onClick={this.createNewProject}
-                >
+                    onClick={this.createNewProject}>
                     <FontAwesomeIcon icon={faPlus} />
                  Create project</button>
-                <NewProjectModal onClose={this.createNewProject} show={this.state.showNewProject} />
             </div>
         );
+    }
+    setprojectName = (name) => {
+        this.setState({
+            projectName: name
+        });
+    }
+    setprojectDescription = (description) => {
+        this.setState({
+            projectDescription: description
+        });
     }
     handleChange(event) {
         window.postMessage({
@@ -82,8 +101,8 @@ export class LandingPage extends React.Component {
                             return (
                                 <div key={i} className="card" style={{ width: '20vw' }}>
                                     <div className="column">
-                                        <h4>Project Name</h4>
-                                        <h5>Project Description</h5>
+                                        <h4>{el.projectName}</h4>
+                                        <h5>{el.projectDescription}</h5>
                                         <div className="row">
                                             <button className='button primary-buttion'>open</button>
                                             <button className='button primary-buttion'>open</button>
@@ -140,7 +159,6 @@ export class LandingPage extends React.Component {
         );
     }
     changeSidenav = (event) => {
-        console.log((this.state.expandStaus.status));
         let PrevStatus = this.state.expandStaus.status;
         this.setState({
             expandStaus: {
@@ -185,6 +203,17 @@ export class LandingPage extends React.Component {
                     {this.sidnav()}
                     {this.mainContent()}
                 </div>
+                <Modal title="Create New Project" showCancel={true} showSubmit={true} onClose={() => {
+                    this.setState({
+                        ...this.state,
+                        showNewProject: !this.state.showNewProject
+                    })
+                }} show={this.state.showNewProject} onSubmit={this.createNewProjectSubmit}>
+                    <div>
+                        <MaterialInput value={this.setprojectName} placeHolder='Project Name' />
+                        <MaterialInput value={this.setprojectDescription} placeHolder='Project Description' />
+                    </div>
+                </Modal>
             </div>
         );
     }
