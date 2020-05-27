@@ -99,10 +99,8 @@ export class Utils {
         return data;
     }
 
-    writeJSON2File(filePath, json) {
-        fs.writeFile(filePath, JSON.stringify(json), 'utf8', (err) => {
-            if (err) throw err;
-        });
+    writeJSON2File(filePath, json,callback?) {
+        fs.writeFileSync(filePath, JSON.stringify(json), 'utf8');
     }
     readFileAsJSON(filePath) {
         let dataString = fs.readFileSync(filePath, 'utf-8');

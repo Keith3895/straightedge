@@ -25,7 +25,7 @@ export class Workspace extends Utils {
         let dirRawList = fs.readdirSync(this.wsPath);
         return dirRawList.map(el => this.isProjectFolder(Path.join(this.wsPath, el))).filter(el => el);
     }
-    isProjectFolder = (folderPath) => {
+    private isProjectFolder = (folderPath) => {
         if (fs.lstatSync(folderPath).isDirectory()) {
             let content = fs.readdirSync(folderPath);
             let result = content.findIndex(el => /ste.json$/.test(el));

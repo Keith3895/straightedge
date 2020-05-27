@@ -16,6 +16,8 @@ CoreAPI.get('/workspace', (req, res) => {
             workspace: WSinstance.WsPath,
             list: WSinstance.loadWs()
         });
+    }else{
+        return res.status(500).send('wokspace not found.');
     }
 });
 
