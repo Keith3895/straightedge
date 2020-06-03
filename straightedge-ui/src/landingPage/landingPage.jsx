@@ -5,6 +5,7 @@ import { faChevronLeft, faFile, faBars, faFolder, faPlus } from '@fortawesome/fr
 import axios from 'axios';
 import { MaterialInput } from '../component/materialInput/materialInput';
 import { Modal } from '../component/modal/modal';
+import { Link } from 'react-router-dom';
 export class LandingPage extends React.Component {
     constructor(props) {
         super(props);
@@ -104,8 +105,16 @@ export class LandingPage extends React.Component {
                                         <h4>{el.projectName}</h4>
                                         <h5>{el.projectDescription}</h5>
                                         <div className="row">
-                                            <button className='button primary-buttion'>open</button>
-                                            <button className='button primary-buttion'>open</button>
+                                            <button className='button primary-buttion'>
+                                                <Link
+                                                    to={{
+                                                        pathname: "/project",
+                                                        state: { projectName: el.projectName }
+                                                    }}
+                                                    style={{ textDecoration: 'none',color:'inherit' }}
+                                                    >open</Link>
+                                            </button>
+                                            <button className='button primary-buttion'>Delete</button>
                                         </div>
                                     </div>
                                 </div>

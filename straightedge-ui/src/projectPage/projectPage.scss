@@ -1,0 +1,36 @@
+@import "../App.scss";
+
+.projects {
+    display: flex;
+    height: 100vh;
+    background: $quaternary;
+    width: 80%;
+}
+
+.side-nav-title {
+    display: flex;
+    padding: 6px;
+    font-size: larger;
+    font-weight: 600;
+    background: $pent;
+}
+
+.diamond {
+    width: 0;
+    height: 0;
+    border: 30px solid transparent;
+    border-bottom-color: red;
+    position: relative;
+    top: -30px;
+
+    &:after {
+        content: '';
+        position: absolute;
+        left: -30px;
+        top: 30px;
+        width: 0;
+        height: 0;
+        border: 30px solid transparent;
+        border-top-color: red;
+    }
+}
